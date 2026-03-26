@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Client Intake Form - Brijesh Shaw</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #0b0c1a; color: #e0e6f0; min-height: 100vh; padding: 40px 16px 60px; }
+.page { max-width: 720px; margin: 0 auto; }
+.header { text-align: center; margin-bottom: 36px; }
+.brand { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #00d4ff; text-transform: uppercase; margin-bottom: 10px; }
+.header h1 { font-size: 34px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.header h1 em { font-style: normal; color: #00d4ff; }
+.divider { width: 60px; height: 3px; background: linear-gradient(90deg,#00d4ff,#a259ff); border-radius:2px; margin: 12px auto; }
+.header p { font-size: 13px; color: #6680a0; max-width: 440px; margin: 0 auto; line-height: 1.6; }
+.section { background: #12142a; border: 1px solid #1e2545; border-radius: 14px; padding: 24px 24px 20px; margin-bottom: 18px; position: relative; overflow: hidden; }
+.section::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: linear-gradient(90deg,#00d4ff,#a259ff); }
+.sec-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.sec-sub { font-size: 12px; color: #445577; margin-bottom: 18px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid1 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.full { grid-column: 1 / -1; }
+@media(max-width:540px){ .grid2{ grid-template-columns:1fr; } }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 12px; font-weight: 600; color: #7799cc; }
+.req { color: #ff6060; }
+input[type=text], input[type=email], input[type=tel], input[type=url], select, textarea {
+  background: #0a0c20; border: 1px solid #1e2a4a; border-radius: 8px;
+  color: #e0e6f0; font-family: Arial, sans-serif; font-size: 14px;
+  padding: 10px 13px; outline: none; width: 100%; transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus { border-color: #00d4ff; }
+textarea { resize: vertical; min-height: 78px; line-height: 1.5; }
+select { cursor: pointer; }
+select option { background: #12142a; }
+input::placeholder, textarea::placeholder { color: #2e3a55; }
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 4px; }
+@media(max-width:400px){ .check-grid{ grid-template-columns:1fr; } }
+.chk { display:flex; align-items:center; gap:9px; background:#0a0c20; border:1px solid #1e2a4a; border-radius:7px; padding:8px 11px; cursor:pointer; font-size:13px; color:#8899bb; user-select:none; }
+.chk:hover { border-color:#00d4ff; color:#e0e6f0; }
+.chk input[type=checkbox] { accent-color:#00d4ff; width:14px; height:14px; cursor:pointer; flex-shrink:0; }
+.radio-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+.rpill { display:flex; align-items:center; gap:7px; background:#0a0c20; border:1px solid #1e2a4a; border-radius:18px; padding:7px 13px; cursor:pointer; font-size:13px; color:#8899bb; user-select:none; }
+.rpill:hover { border-color:#a259ff; color:#e0e6f0; }
+.rpill input[type=radio] { accent-color:#a259ff; width:13px; height:13px; cursor:pointer; }
+.submit-wrap { text-align: center; margin-top: 28px; }
+#submitBtn {
+  background: linear-gradient(90deg,#00c6ff,#7b2ff7);
+  border: none; border-radius: 28px; color: #fff; cursor: pointer;
+  font-size: 16px; font-weight: 700; padding: 15px 46px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+#submitBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+#submitBtn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.submit-note { font-size: 12px; color: #334466; margin-top: 8px; }
+#errMsg { display:none; color:#ff6060; font-size:13px; margin-top:10px; padding:10px 14px; background:#200a0a; border-radius:8px; border:1px solid #5a1a1a; }
+#successBox { display:none; text-align:center; padding:48px 20px; background:#0d1820; border:2px solid #1e4a30; border-radius:16px; margin-bottom:20px; }
+#successBox h2 { color:#00e5a0; font-size:28px; margin-bottom:14px; }
+#successBox p { color:#6688aa; font-size:15px; line-height:2.1; }
+.footer { text-align:center; margin-top:36px; font-size:12px; color:#2e3a55; }
+.footer strong { color:#445577; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="brand">Brijesh Shaw &middot; Web Developer</div>
+    <h1>Client <em>Intake Form</em></h1>
+    <div class="divider"></div>
+    <p>Please fill in the details below so we can build your perfect website. All information is kept confidential.</p>
+  </div>
+
+  <div id="successBox">
+    <h2>&#10003; Thank You!</h2>
+    <p>Your details have been saved successfully.<br/>
+    Brijesh Shaw will contact you within 24 hours.<br/><br/>
+    &#128222; +91 6291183125<br/>
+    &#9993; brijeshshaw8000@gmail.com</p>
+  </div>
+
+  <div id="formWrap">
+
+    <div class="section">
+      <div class="sec-title">&#127970; Basic Business Info</div>
+      <div class="sec-sub">Tell us about your business</div>
+      <div class="grid2">
+        <div class="field">
+          <label>Business Name <span class="req">*</span></label>
+          <input type="text" id="f_businessName" placeholder="e.g. Star Events Co."/>
+        </div>
+        <div class="field">
+          <label>Owner / Contact Name <span class="req">*</span></label>
+          <input type="text" id="f_ownerName" placeholder="Your full name"/>
+        </div>
+        <div class="field">
+          <label>Phone / WhatsApp <span class="req">*</span></label>
+          <input type="tel" id="f_phone" placeholder="+91 XXXXX XXXXX"/>
+        </div>
+        <div class="field">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="f_email" placeholder="you@email.com"/>
+        </div>
+        <div class="field">
+          <label>City / Area</label>
+          <input type="text" id="f_city" placeholder="e.g. Mumbai, Maharashtra"/>
+        </div>
+        <div class="field">
+          <label>Years in Business</label>
+          <select id="f_years">
+            <option value="">Select...</option>
+            <option>Less than 1 year</option>
+            <option>1-3 years</option>
+            <option>3-5 years</option>
+            <option>5+ years</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Business Tagline / Slogan</label>
+          <input type="text" id="f_tagline" placeholder='e.g. "Making Your Moments Memorable"'/>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">&#127919; Services &amp; Speciality</div>
+      <div class="sec-sub">What kind of events do you manage?</div>
+      <div class="grid1">
+        <div class="field">
+          <label>Type of Events You Handle</label>
+          <div class="check-grid" id="f_eventTypes">
+            <label class="chk"><input type="checkbox" value="Wedding Events"/><span>Wedding Events</span></label>
+            <label class="chk"><input type="checkbox" value="Corporate Events"/><span>Corporate Events</span></label>
+            <label class="chk"><input type="checkbox" value="Birthday Parties"/><span>Birthday Parties</span></label>
+            <label class="chk"><input type="checkbox" value="Social Gatherings"/><span>Social Gatherings</span></label>
+            <label class="chk"><input type="checkbox" value="Music / Concerts"/><span>Music / Concerts</span></label>
+            <label class="chk"><input type="checkbox" value="Exhibitions / Expos"/><span>Exhibitions / Expos</span></label>
+            <label class="chk"><input type="checkbox" value="Baby Showers"/><span>Baby Showers</span></label>
+            <label class="chk"><input type="checkbox" value="Other"/><span>Other</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Most Popular / Flagship Service</label>
+          <input type="text" id="f_flagship" placeholder="e.g. Grand Wedding Decoration"/>
+        </div>
+        <div class="field">
+          <label>Special Packages or Pricing</label>
+          <textarea id="f_packages" placeholder="e.g. Basic Rs.20,000 | Premium Rs.50,000..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">&#127912; Design Preferences</div>
+      <div class="sec-sub">Help us understand your style</div>
+      <div class="grid2">
+        <div class="field">
+          <label>Do You Have a Logo?</label>
+          <div class="radio-row">
+            <label class="rpill"><input type="radio" name="logo" value="Yes, I have one"/><span>Yes, I have one</span></label>
+            <label class="rpill"><input type="radio" name="logo" value="No, make one for me"/><span>No, make one for me</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Website Vibe / Feel</label>
+          <div class="radio-row">
+            <label class="rpill"><input type="radio" name="vibe" value="Elegant"/><span>Elegant</span></label>
+            <label class="rpill"><input type="radio" name="vibe" value="Modern"/><span>Modern</span></label>
+            <label class="rpill"><input type="radio" name="vibe" value="Luxury"/><span>Luxury</span></label>
+            <label class="rpill"><input type="radio" name="vibe" value="Fun and Colorful"/><span>Fun &amp; Colorful</span></label>
+            <label class="rpill"><input type="radio" name="vibe" value="Minimal"/><span>Minimal</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Preferred Color Theme</label>
+          <input type="text" id="f_colorTheme" placeholder="e.g. Gold and Black, Rose Gold"/>
+        </div>
+        <div class="field">
+          <label>Reference Website (if any)</label>
+          <input type="url" id="f_refSite" placeholder="https://example.com"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">&#128248; Content &amp; Media</div>
+      <div class="sec-sub">What material can you provide?</div>
+      <div class="grid2">
+        <div class="field">
+          <label>What do you have ready?</label>
+          <div class="check-grid" id="f_contentAvail">
+            <label class="chk"><input type="checkbox" value="Event Photos"/><span>Event Photos</span></label>
+            <label class="chk"><input type="checkbox" value="Event Videos"/><span>Event Videos</span></label>
+            <label class="chk"><input type="checkbox" value="Team Photo"/><span>Team Photo</span></label>
+            <label class="chk"><input type="checkbox" value="Client Reviews"/><span>Client Reviews</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Who will write the content?</label>
+          <div class="radio-row">
+            <label class="rpill"><input type="radio" name="contentWriter" value="I will provide it"/><span>I will provide it</span></label>
+            <label class="rpill"><input type="radio" name="contentWriter" value="You write it for me"/><span>You write it for me</span></label>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Client Testimonials / Reviews</label>
+          <textarea id="f_testimonials" placeholder='e.g. "Best event management team! - Priya S."'></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">&#128222; Contact &amp; Social Media</div>
+      <div class="sec-sub">Links we will add to your website</div>
+      <div class="grid2">
+        <div class="field">
+          <label>WhatsApp Number</label>
+          <input type="tel" id="f_whatsapp" placeholder="+91 XXXXX XXXXX"/>
+        </div>
+        <div class="field">
+          <label>Business Email</label>
+          <input type="email" id="f_bizEmail" placeholder="business@email.com"/>
+        </div>
+        <div class="field full">
+          <label>Business Address</label>
+          <input type="text" id="f_address" placeholder="Full address for Google Maps embed"/>
+        </div>
+        <div class="field">
+          <label>Instagram Profile</label>
+          <input type="url" id="f_instagram" placeholder="https://instagram.com/yourpage"/>
+        </div>
+        <div class="field">
+          <label>Facebook Page</label>
+          <input type="url" id="f_facebook" placeholder="https://facebook.com/yourpage"/>
+        </div>
+        <div class="field">
+          <label>YouTube Channel</label>
+          <input type="url" id="f_youtube" placeholder="https://youtube.com/yourchannel"/>
+        </div>
+        <div class="field">
+          <label>Other Social (LinkedIn / Pinterest)</label>
+          <input type="url" id="f_otherSocial" placeholder="https://..."/>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">&#9881; Website Features Needed</div>
+      <div class="sec-sub">Select all that apply</div>
+      <div class="check-grid" id="f_features">
+        <label class="chk"><input type="checkbox" value="WhatsApp Chat Button"/><span>WhatsApp Chat Button</span></label>
+        <label class="chk"><input type="checkbox" value="Inquiry / Booking Form"/><span>Inquiry / Booking Form</span></label>
+        <label class="chk"><input type="checkbox" value="Google Maps Location"/><span>Google Maps Location</span></label>
+        <label class="chk"><input type="checkbox" value="Photo Gallery Slider"/><span>Photo Gallery Slider</span></label>
+        <label class="chk"><input type="checkbox" value="Video Section"/><span>Video Section</span></label>
+        <label class="chk"><input type="checkbox" value="Testimonials Section"/><span>Testimonials Section</span></label>
+        <label class="chk"><input type="checkbox" value="Blog / News Section"/><span>Blog / News Section</span></label>
+        <label class="chk"><input type="checkbox" value="Pricing / Packages Page"/><span>Pricing / Packages Page</span></label>
+        <label class="chk"><input type="checkbox" value="Social Media Feed"/><span>Social Media Feed</span></label>
+        <label class="chk"><input type="checkbox" value="Book Now Button"/><span>Book Now Button</span></label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">&#128197; Timeline &amp; Extra Notes</div>
+      <div class="sec-sub">Almost done!</div>
+      <div class="grid2">
+        <div class="field">
+          <label>When Do You Need the Website?</label>
+          <select id="f_timeline">
+            <option value="">Select...</option>
+            <option>As soon as possible</option>
+            <option>Within 1 week</option>
+            <option>Within 2 weeks</option>
+            <option>Within 1 month</option>
+            <option>No rush</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Upcoming Event to Promote?</label>
+          <input type="text" id="f_upcomingEvent" placeholder="e.g. New Year Gala - Dec 31"/>
+        </div>
+        <div class="field full">
+          <label>Anything Else You Want on Your Website?</label>
+          <textarea id="f_notes" placeholder="Any special requests, ideas, or notes for us..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="button" id="submitBtn">Submit My Details &#8594;</button>
+      <p class="submit-note">We will contact you within 24 hours on WhatsApp or Email.</p>
+      <div id="errMsg"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <strong>Brijesh Shaw</strong> &middot; Web Developer &middot; +91 6291183125 &middot; brijeshshaw8000@gmail.com
+  </div>
+
+</div>
+
+<script>
+(function() {
+
+  var SHEET_URL = "https://script.google.com/macros/s/AKfycbyy7OefYeggMxbnY5flmRwFeiFNXh_zbQH0gSherKxjdC7H6lZdVNOXAbdp3wxEQs4/exec";
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+  function getChecked(containerId) {
+    var items = document.querySelectorAll("#" + containerId + " input[type=checkbox]:checked");
+    var result = [];
+    for (var i = 0; i < items.length; i++) { result.push(items[i].value); }
+    return result.join(" | ");
+  }
+
+  function getRadio(name) {
+    var el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : "";
+  }
+
+  function showSuccess() {
+    document.getElementById("formWrap").style.display = "none";
+    document.getElementById("successBox").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function doSubmit() {
+    var btn    = document.getElementById("submitBtn");
+    var errEl  = document.getElementById("errMsg");
+
+    var bizName = val("f_businessName");
+    var owner   = val("f_ownerName");
+    var phone   = val("f_phone");
+    var email   = val("f_email");
+
+    if (!bizName || !owner || !phone || !email) {
+      errEl.style.display = "block";
+      errEl.textContent = "Please fill in Business Name, Owner Name, Phone and Email.";
+      errEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    errEl.style.display = "none";
+    btn.textContent = "Saving... please wait";
+    btn.disabled = true;
+
+    // Build form-encoded string — Google Apps Script reads this as e.parameter
+    var data = {
+      businessName:     bizName,
+      ownerName:        owner,
+      phone:            phone,
+      email:            email,
+      city:             val("f_city"),
+      yearsInBusiness:  val("f_years"),
+      tagline:          val("f_tagline"),
+      eventTypes:       getChecked("f_eventTypes"),
+      flagshipService:  val("f_flagship"),
+      packages:         val("f_packages"),
+      hasLogo:          getRadio("logo"),
+      vibe:             getRadio("vibe"),
+      colorTheme:       val("f_colorTheme"),
+      referenceWebsite: val("f_refSite"),
+      contentAvailable: getChecked("f_contentAvail"),
+      contentWriter:    getRadio("contentWriter"),
+      testimonials:     val("f_testimonials"),
+      whatsapp:         val("f_whatsapp"),
+      businessEmail:    val("f_bizEmail"),
+      address:          val("f_address"),
+      instagram:        val("f_instagram"),
+      facebook:         val("f_facebook"),
+      youtube:          val("f_youtube"),
+      otherSocial:      val("f_otherSocial"),
+      featuresNeeded:   getChecked("f_features"),
+      timeline:         val("f_timeline"),
+      upcomingEvent:    val("f_upcomingEvent"),
+      extraNotes:       val("f_notes")
+    };
+
+    // Encode as URL form data — e.parameter works with this in Apps Script
+    var encoded = Object.keys(data).map(function(k) {
+      return encodeURIComponent(k) + "=" + encodeURIComponent(data[k]);
+    }).join("&");
+
+    fetch(SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encoded
+    })
+    .then(function() {
+      showSuccess();
+    })
+    .catch(function() {
+      showSuccess();
+    });
+  }
+
+  // Wait for DOM then attach click
+  document.addEventListener("DOMContentLoaded", function() {
+    var btn = document.getElementById("submitBtn");
+    if (btn) {
+      btn.addEventListener("click", doSubmit);
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
